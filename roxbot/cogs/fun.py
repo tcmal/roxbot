@@ -332,6 +332,21 @@ class Fun:
 		embed.set_footer(text=base_url)
 		return await ctx.send(embed=embed)
 
+	@bot.command()
+	async def roxbotfact(self, ctx):
+		fact_index = random.randrange(0, len(roxbot.roxbotfacts.facts))
+		fact = roxbot.roxbotfacts.facts[fact_index]
+		if fact[1] in roxbot.roxbotfacts.contributors:
+			author = self.bot.get_user(roxbot.roxbotfacts.contributors[fact[1]])
+		else:
+			author = fact[1]
+		if author is None:  # Just in case Roxbot doesnt share a server with the author of the fact.
+			author = fact[1]
+
+		embed = discord.Embed(title="Roxbot Fact #{}!".format(fact_index+1), description=fact[0], colour=roxbot.EmbedColours.pink)
+		embed.set_footer(text="Credit: {}".format(author))
+
+		return await ctx.send(embed=embed)
 
 def setup(bot_client):
 	bot_client.add_cog(Fun(bot_client))
